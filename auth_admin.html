@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDFX - 卡密授权管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1e2a42;
+    --border: #2a3550;
+    --text-primary: #e8ecf4;
+    --text-secondary: #8892a8;
+    --text-muted: #5a6478;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.25);
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.12);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.12);
+    --info: #3b82f6;
+    --info-bg: rgba(59, 130, 246, 0.12);
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── 背景装饰 ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 20%, rgba(99,102,241,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(59,130,246,0.06) 0%, transparent 40%);
+    z-index: 0;
+    animation: bgFloat 20s ease-in-out infinite alternate;
+  }
+  @keyframes bgFloat {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-3%, 3%); }
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── 顶栏 ─── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26,34,54,0.95) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    backdrop-filter: blur(12px);
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #818cf8, #6366f1, #4f46e5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .stats {
+    display: flex;
+    gap: 20px;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-item .num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-item .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── 创建面板 ─── */
+  .create-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group select,
+  .form-group input {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 140px;
+  }
+  .form-group select:focus,
+  .form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    box-shadow: 0 2px 12px var(--accent-glow);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 4px 20px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+  .btn-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(34,197,94,0.25);
+  }
+  .btn-success:hover { background: rgba(34,197,94,0.2); }
+  .btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(239,68,68,0.25);
+  }
+  .btn-danger:hover { background: rgba(239,68,68,0.2); }
+  .btn-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+  .btn-warning:hover { background: rgba(245,158,11,0.2); }
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    background: rgba(99,102,241,0.08);
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+  }
+  td {
+    padding: 14px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    vertical-align: middle;
+  }
+  tr:hover td {
+    background: var(--bg-card-hover);
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ─── 状态标签 ─── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .badge-active {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+  .badge-active::before { background: var(--success); }
+  .badge-inactive {
+    background: var(--warning-bg);
+    color: var(--warning);
+  }
+  .badge-inactive::before { background: var(--warning); }
+  .badge-expired {
+    background: var(--danger-bg);
+    color: var(--danger);
+  }
+  .badge-expired::before { background: var(--danger); }
+
+  .mono {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--info);
+    background: var(--info-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    user-select: all;
+  }
+
+  .time-cell {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .time-cell .remaining {
+    font-weight: 600;
+  }
+  .time-cell .remaining.ok { color: var(--success); }
+  .time-cell .remaining.warn { color: var(--warning); }
+  .time-cell .remaining.expired { color: var(--danger); }
+
+  .actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .duration-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .duration-tag.day { background: var(--info-bg); color: var(--info); }
+  .duration-tag.month { background: rgba(168,85,247,0.12); color: #a855f7; }
+  .duration-tag.custom { background: var(--warning-bg); color: var(--warning); }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  .empty-state p { font-size: 14px; }
+
+  /* ─── Toast ─── */
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toast {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    animation: toastIn 0.3s ease-out;
+    box-shadow: var(--shadow);
+  }
+  .toast.success { background: #166534; color: #bbf7d0; }
+  .toast.error { background: #991b1b; color: #fecaca; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ─── 加载动画 ─── */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── 自定义时长输入 ─── */
+  #customGroup {
+    display: none;
+  }
+  #customGroup.show {
+    display: flex;
+  }
+
+  /* ─── 批量操作 ─── */
+  .bulk-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(99,102,241,0.06);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* ─── 响应式 ─── */
+  @media (max-width: 768px) {
+    .create-panel { flex-direction: column; align-items: stretch; }
+    .stats { gap: 12px; }
+    .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    table { font-size: 12px; }
+    td, th { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- 顶栏 -->
+    <div class="header">
+      <div>
+        <h1>🔐 卡密授权管理</h1>
+        <div class="subtitle">MQTT 客户端授权 · 实时管理</div>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="num" id="statTotal">-</div>
+          <div class="label">总数</div>
+        </div>
+        <div class="stat-item">
+          <div class="num" id="statActive" style="color:var(--success)">-</div>
+          <div class="label">激活</div>
+        </div>
+        <div class="stat-item">
+          <div class="num" id="statExpired" style="color:var(--danger)">-</div>
+          <div class="label">过期</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 创建面板 -->
+    <div class="create-panel">
+      <div class="form-group">
+        <label>卡密类型</label>
+        <select id="durationType" onchange="toggleCustom()">
+          <option value="day">天卡 (24小时)</option>
+          <option value="month" selected>月卡 (30天)</option>
+          <option value="custom">自定义</option>
+        </select>
+      </div>
+      <div class="form-group" id="customGroup">
+        <label>自定义时长 (小时)</label>
+        <input type="number" id="customHours" placeholder="如 72" min="1">
+      </div>
+      <div class="form-group">
+        <label>备注</label>
+        <input type="text" id="note" placeholder="可选备注" style="min-width:180px">
+      </div>
+      <div class="form-group" style="flex-grow:1;align-items:flex-end">
+        <button class="btn btn-primary" onclick="createCard()" id="createBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          生成卡密
+        </button>
+      </div>
+    </div>
+
+    <!-- 表格 -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>账号</th>
+            <th>密码</th>
+            <th>类型</th>
+            <th>状态</th>
+            <th>时间信息</th>
+            <th>备注</th>
+            <th style="text-align:right">操作</th>
+          </tr>
+        </thead>
+        <tbody id="cardTable">
+          <tr><td colspan="7" class="empty-state"><div class="spinner"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastBox"></div>
+
+  <script>
+    const API = '/api/auth';
+
+    // ─── Toast ───
+    function toast(msg, type = 'success') {
+      const box = document.getElementById('toastBox');
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.textContent = msg;
+      box.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 2500);
+    }
+
+    // ─── 切换自定义时长输入 ───
+    function toggleCustom() {
+      const sel = document.getElementById('durationType').value;
+      document.getElementById('customGroup').className = sel === 'custom' ? 'form-group show' : 'form-group';
+    }
+
+    // ─── 创建卡密 ───
+    async function createCard() {
+      const btn = document.getElementById('createBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> 生成中...';
+
+      const body = {
+        duration_type: document.getElementById('durationType').value,
+        note: document.getElementById('note').value,
+      };
+      if (body.duration_type === 'custom') {
+        body.custom_hours = parseInt(document.getElementById('customHours').value);
+        if (!body.custom_hours || body.custom_hours <= 0) {
+          toast('请输入有效的自定义时长', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '✚ 生成卡密';
+          return;
+        }
+      }
+
+      try {
+        const res = await fetch(`${API}/cards`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast(`卡密创建成功: ${data.data.account}`);
+          document.getElementById('note').value = '';
+          loadCards();
+        } else {
+          toast(data.error || '创建失败', 'error');
+        }
+      } catch (e) {
+        toast('网络错误', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 生成卡密`;
+    }
+
+    // ─── 激活 / 停用 ───
+    async function toggleActive(id, currentlyActive) {
+      const action = currentlyActive ? 'deactivate' : 'activate';
+      try {
+        const res = await fetch(`${API}/cards/${id}/${action}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          toast(currentlyActive ? '已停用' : '已激活');
+          loadCards();
+        } else {
+          toast(data.error, 'error');
+        }
+      } catch (e) {
+        toast('操作失败', 'error');
+      }
+    }
+
+    // ─── 删除 ───
+    async function deleteCard(id) {
+      if (!confirm('确定删除此卡密？')) return;
+      try {
+        const res = await fetch(`${API}/cards/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          toast('已删除');
+          loadCards();
+        }
+      } catch (e) {
+        toast('删除失败', 'error');
+      }
+    }
+
+    // ─── 剩余时间格式化 ───
+    function formatRemaining(expiresAt) {
+      if (!expiresAt) return { text: '-', cls: '' };
+      const diff = new Date(expiresAt) - new Date();
+      if (diff <= 0) return { text: '已过期', cls: 'expired' };
+      const h = Math.floor(diff / 3600000);
+      const d = Math.floor(h / 24);
+      const remH = h % 24;
+      if (d > 3) return { text: `${d}天${remH}时`, cls: 'ok' };
+      if (d > 0) return { text: `${d}天${remH}时`, cls: 'warn' };
+      return { text: `${h}小时`, cls: 'warn' };
+    }
+
+    // ─── 时长类型标签 ───
+    function durationLabel(type, hours) {
+      const map = { day: '天卡', month: '月卡', custom: '自定义' };
+      const label = map[type] || type;
+      return `<span class="duration-tag ${type}">${label} · ${hours}h</span>`;
+    }
+
+    // ─── 获取状态 ───
+    function getStatus(card) {
+      if (!card.is_active) return { badge: 'inactive', text: '待使用' };
+      if (card.expires_at && new Date(card.expires_at) < new Date()) {
+        return { badge: 'expired', text: '已过期' };
+      }
+      return { badge: 'active', text: '使用中' };
+    }
+
+    // ─── 加载列表 ───
+    async function loadCards() {
+      try {
+        const res = await fetch(`${API}/cards`);
+        const data = await res.json();
+        if (!data.success) return;
+
+        const cards = data.data;
+        const tbody = document.getElementById('cardTable');
+
+        // 统计
+        let total = cards.length;
+        let active = 0, expired = 0;
+        cards.forEach(c => {
+          const s = getStatus(c);
+          if (s.badge === 'active') active++;
+          if (s.badge === 'expired') expired++;
+        });
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statActive').textContent = active;
+        document.getElementById('statExpired').textContent = expired;
+
+        if (!cards.length) {
+          tbody.innerHTML = `
+            <tr><td colspan="7" class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+              <p>暂无卡密，点击上方「生成卡密」创建</p>
+            </td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = cards.map(c => {
+          const status = getStatus(c);
+          const remaining = formatRemaining(c.expires_at);
+          const isActive = status.badge === 'active';
+
+          return `<tr>
+            <td><span class="mono">${c.account}</span></td>
+            <td><span class="mono">${c.password}</span></td>
+            <td>${durationLabel(c.duration_type, c.duration_hours)}</td>
+            <td><span class="badge badge-${status.badge}">${status.text}</span></td>
+            <td class="time-cell">
+              ${c.activated_at ? '首次登录: ' + c.activated_at.replace('T', ' ') + '<br>' : '<span style="color:var(--text-muted)">首次登录时自动激活</span><br>'}
+              ${c.expires_at ? '到期: ' + c.expires_at.replace('T', ' ') + '<br>' : ''}
+              ${c.expires_at ? '<span class="remaining ' + remaining.cls + '">剩余: ' + remaining.text + '</span>' : ''}
+            </td>
+            <td style="color:var(--text-muted)">${c.note || '-'}</td>
+            <td>
+              <div class="actions" style="justify-content:flex-end">
+                ${isActive ? '<button class="btn btn-sm btn-warning" onclick="toggleActive(' + c.id + ', 1)">停用</button>' : ''}
+                <button class="btn btn-sm btn-danger" onclick="deleteCard(${c.id})">删除</button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+
+      } catch (e) {
+        console.error(e);
+        toast('加载卡密列表失败', 'error');
+      }
+    }
+
+    // ─── 定时刷新 ───
+    loadCards();
+    setInterval(loadCards, 30000);
+  </script>
+</body>
+</html>
