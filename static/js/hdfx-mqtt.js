@@ -951,7 +951,7 @@
     } else if (dt === "ft_qb" || dt === "bk_qb") {
       _scaleQBData(result.QBData, scale);
     } else if (dt === "ft_goal") {
-      _scaleGoalData(result.goalData, scale);
+      // 足球总进球数: 不缩放, 直接用服务器返回的数据
     } else if (dt === "ft_bqc") {
       _scaleBqcData(result.bqcData, scale);
     }
@@ -1024,21 +1024,6 @@
       item.HGAmount2_2 = _scaleVal(item.HGAmount2_2, scale);
       item.profit = _scaleVal(item.profit, scale);
       // profitRate 不缩放
-    }
-  }
-
-  function _scaleGoalData(list, scale) {
-    if (!list) return;
-    for (var i = 0; i < list.length; i++) {
-      var d = list[i].data;
-      if (!d) continue;
-      d.jcBet1 = _scaleVal(d.jcBet1, scale);
-      d.hgBet1 = _scaleVal(d.hgBet1, scale);
-      d.JCPoint1 = _scaleVal(d.JCPoint1, scale);
-      d.HGPoint1 = _scaleVal(d.HGPoint1, scale);
-      d.jcAmount1 = _scaleVal(d.jcAmount1, scale);
-      d.hgAmount1 = _scaleVal(d.hgAmount1, scale);
-      d.profit = _scaleVal(d.profit, scale);
     }
   }
 
