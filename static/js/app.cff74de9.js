@@ -860,10 +860,24 @@
                 getBaskgetOddsHistory: "https://webapi.sporttery.cn/gateway/uniform/basketball/getOddsHistoryV1.qry"
             };
         function n(t) {
-            return window.__hdfx_mqtt.planRequest("plan_oddshistory", t);
+            var q = Object.keys(t || {}).map(function (k) {
+                return encodeURIComponent(k) + "=" + encodeURIComponent(t[k])
+            }).join("&");
+            return fetch(i.getOddsHistory + (q ? "?" + q : ""), {
+                method: "GET"
+            }).then(function (r) {
+                return r.json()
+            })
         }
         function o(t) {
-            return window.__hdfx_mqtt.planRequest("plan_oddshistory_bk", t);
+            var q = Object.keys(t || {}).map(function (k) {
+                return encodeURIComponent(k) + "=" + encodeURIComponent(t[k])
+            }).join("&");
+            return fetch(i.getBaskgetOddsHistory + (q ? "?" + q : ""), {
+                method: "GET"
+            }).then(function (r) {
+                return r.json()
+            })
         }
     },
     "61f7": function (t, a, e) {
