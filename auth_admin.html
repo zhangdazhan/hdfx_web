@@ -364,6 +364,61 @@
     display: flex;
   }
 
+  /* ─── 创建结果弹框 ─── */
+  .modal-mask {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-mask.show { display: flex; }
+  .modal-box {
+    background: var(--bg-secondary, #fff);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: min(520px, 92vw);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-secondary, #888);
+  }
+  .result-text {
+    margin: 0;
+    padding: 16px 20px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .modal-foot {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+  }
+
   /* ─── 批量操作 ─── */
   .bulk-bar {
     display: flex;
@@ -428,6 +483,18 @@
         <label>备注</label>
         <input type="text" id="note" placeholder="可选备注" style="min-width:180px">
       </div>
+      <div class="form-group">
+        <label>自定义账号</label>
+        <input type="text" id="customAccount" placeholder="留空则随机生成">
+      </div>
+      <div class="form-group">
+        <label>自定义密码</label>
+        <input type="text" id="customPassword" placeholder="留空则随机生成">
+      </div>
+      <div class="form-group">
+        <label>生成数量</label>
+        <input type="number" id="createCount" value="1" min="1" max="100" style="min-width:90px">
+      </div>
       <div class="form-group" style="flex-grow:1;align-items:flex-end">
         <button class="btn btn-primary" onclick="createCard()" id="createBtn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -459,6 +526,21 @@
 
   <div class="toast-container" id="toastBox"></div>
 
+  <!-- 创建结果弹框 -->
+  <div class="modal-mask" id="resultModal" onclick="if(event.target===this)closeResultModal()">
+    <div class="modal-box">
+      <div class="modal-head">
+        <span id="resultTitle">创建成功</span>
+        <button class="modal-close" onclick="closeResultModal()">&times;</button>
+      </div>
+      <pre class="result-text" id="resultText"></pre>
+      <div class="modal-foot">
+        <button class="btn btn-primary" onclick="copyResult()" id="copyBtn">复制账号密码</button>
+        <button class="btn" onclick="closeResultModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API = '/api/auth';
 
@@ -488,6 +570,15 @@
         duration_type: document.getElementById('durationType').value,
         note: document.getElementById('note').value,
       };
+      const customAccount = document.getElementById('customAccount').value.trim();
+      const customPassword = document.getElementById('customPassword').value.trim();
+      let count = parseInt(document.getElementById('createCount').value) || 1;
+      count = Math.max(1, Math.min(count, 100));
+      body.count = count;
+      if (count === 1) {
+        if (customAccount) body.account = customAccount;
+        if (customPassword) body.password = customPassword;
+      }
       if (body.duration_type === 'custom') {
         body.custom_hours = parseInt(document.getElementById('customHours').value);
         if (!body.custom_hours || body.custom_hours <= 0) {
@@ -506,8 +597,12 @@
         });
         const data = await res.json();
         if (data.success) {
-          toast(`卡密创建成功: ${data.data.account}`);
+          const cards = Array.isArray(data.data) ? data.data : [data.data];
+          showResultModal(cards);
           document.getElementById('note').value = '';
+          document.getElementById('customAccount').value = '';
+          document.getElementById('customPassword').value = '';
+          document.getElementById('createCount').value = '1';
           loadCards();
         } else {
           toast(data.error || '创建失败', 'error');
@@ -518,6 +613,41 @@
 
       btn.disabled = false;
       btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 生成卡密`;
+    }
+
+    // ─── 创建结果弹框 ───
+    let _resultText = '';
+    function showResultModal(cards) {
+      _resultText = cards.map(c => `账号: ${c.account}  密码: ${c.password}`).join('\n');
+      document.getElementById('resultTitle').textContent = `创建成功 (${cards.length} 个)`;
+      document.getElementById('resultText').textContent = _resultText;
+      document.getElementById('copyBtn').textContent = '复制账号密码';
+      document.getElementById('resultModal').className = 'modal-mask show';
+    }
+    function closeResultModal() {
+      document.getElementById('resultModal').className = 'modal-mask';
+    }
+    async function copyResult() {
+      const btn = document.getElementById('copyBtn');
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(_resultText);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = _resultText;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        btn.textContent = '已复制 ✓';
+        toast('已复制到剪贴板');
+        setTimeout(() => { btn.textContent = '复制账号密码'; }, 2000);
+      } catch (e) {
+        toast('复制失败, 请手动选择', 'error');
+      }
     }
 
     // ─── 激活 / 停用 ───
@@ -549,6 +679,32 @@
         }
       } catch (e) {
         toast('删除失败', 'error');
+      }
+    }
+
+    // ─── 修改密码 ───
+    async function editPassword(id, oldPwdEnc) {
+      const oldPwd = decodeURIComponent(oldPwdEnc);
+      const pwd = prompt('请输入新密码', oldPwd);
+      if (pwd === null) return;
+      const newPwd = pwd.trim();
+      if (!newPwd) { toast('密码不能为空', 'error'); return; }
+      if (newPwd === oldPwd) return;
+      try {
+        const res = await fetch(`${API}/cards/${id}/password`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: newPwd }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('密码已修改');
+          loadCards();
+        } else {
+          toast(data.error || '修改失败', 'error');
+        }
+      } catch (e) {
+        toast('修改失败', 'error');
       }
     }
 
@@ -630,6 +786,7 @@
             <td style="color:var(--text-muted)">${c.note || '-'}</td>
             <td>
               <div class="actions" style="justify-content:flex-end">
+                <button class="btn btn-sm" onclick="editPassword(${c.id}, '${encodeURIComponent(c.password)}')">改密</button>
                 ${isActive ? '<button class="btn btn-sm btn-warning" onclick="toggleActive(' + c.id + ', 1)">停用</button>' : ''}
                 <button class="btn btn-sm btn-danger" onclick="deleteCard(${c.id})">删除</button>
               </div>
