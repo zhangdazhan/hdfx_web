@@ -275,7 +275,8 @@
                     token: Object(y["a"])(),
                     name: "",
                     avatar: "",
-                    role: "user"
+                    role: "user",
+                    viptime: ""
                 }
             }
             , J = T()
