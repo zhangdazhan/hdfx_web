@@ -1,4 +1,0 @@
-# 已存在的真实文件优先返回，其余路径回退到 SPA 入口 (hash 路由)。
-# auth 单独映射到后台页。
-/auth            /auth_admin.html   200
-/*               /index.html        200
