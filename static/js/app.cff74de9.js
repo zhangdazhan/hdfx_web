@@ -6785,7 +6785,7 @@
                         t.configData.minrate = a.data.minrate,
                         t.configData.JCTzAmt = a.data.JCTzAmt,
                         t.configData.uuid = a.data.uuid,
-                        t.routerChange()),
+                        t.$nextTick(function() { t.routerChange() })),
                         t.ifConfigGeted = !0
                 }
                 )).catch((function (a) {
@@ -6818,14 +6818,16 @@
                             this.configData.JCPointSin = this.configData.JCPointSinTgg;
                             break;
                         case "足球全包":
-                            this.configData.JCPointChuan = this.configData.JCPointChuanQb;
+                            this.configData.JCPointSin = this.configData.JCPointSinHad,
+                                this.configData.JCPointChuan = this.configData.JCPointChuanQb;
                             break;
                         case "篮球二串一":
                             this.configData.JCPointSin = this.configData.JCPointSinLq,
                                 this.configData.JCPointChuan = this.configData.JCPointChuanLq;
                             break;
                         case "篮球全包":
-                            this.configData.JCPointChuan = this.configData.JCPointChuanLqQb;
+                            this.configData.JCPointSin = this.configData.JCPointSinLq,
+                                this.configData.JCPointChuan = this.configData.JCPointChuanLqQb;
                             break;
                         case "篮球区间":
                             this.configData.JCPointSin = this.configData.JCPointSinLq,
@@ -6884,14 +6886,16 @@
                             this.configData.JCPointSinHalf = this.configData.JCPointSin;
                             break;
                         case "足球全包":
-                            this.configData.JCPointChuanQb = this.configData.JCPointChuan;
+                            this.configData.JCPointSinHad = this.configData.JCPointSin,
+                                this.configData.JCPointChuanQb = this.configData.JCPointChuan;
                             break;
                         case "篮球二串一":
                             this.configData.JCPointSinLq = this.configData.JCPointSin,
                                 this.configData.JCPointChuanLq = this.configData.JCPointChuan;
                             break;
                         case "篮球全包":
-                            this.configData.JCPointChuanLqQb = this.configData.JCPointChuan;
+                            this.configData.JCPointSinLq = this.configData.JCPointSin,
+                                this.configData.JCPointChuanLqQb = this.configData.JCPointChuan;
                             break;
                         case "篮球区间":
                             this.configData.JCPointSinLq = this.configData.JCPointSin,
