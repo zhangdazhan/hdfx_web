@@ -1,8 +1,0 @@
-/*tab�л�*/
-.header .zx-head-in { position:static;}
-.page1{ width:100%; height:36px; text-align:center; font:16px/36px "΢���ź�"; text-align:center; background-color:#ececec;	border-top:solid 1px #e6e6e6; border-bottom:solid 1px #e6e6e6;}
-.page1 .zc{ width:50%; float:left; height:36px; background-color:#f84a4a; color:#ececec;}
-.page1 .cz{ width:50%; float:left; height:36px; color:#555555; cursor:pointer;background-color:#ececec;}
-.page2{ width:100%; height:36px; text-align:center; font:16px/36px "΢���ź�"; text-align:center; background-color:#ececec;	border-top:solid 1px #e6e6e6; border-bottom:solid 1px #e6e6e6;}
-.page2 .zc{ width:50%; float:left; height:36px; color:#555555; cursor:pointer;background-color:#ececec;}
-.page2 .cz{ width:50%; float:left; height:36px; background-color:#f84a4a; color:#ececec;}
