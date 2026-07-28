@@ -1,0 +1,7 @@
+# 这些文件不作为静态资源上传到 Cloudflare
+.git
+.gitignore
+.wrangler
+.DS_Store
+wrangler.jsonc
+.assetsignore
