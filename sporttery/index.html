@@ -1,0 +1,271 @@
+
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="keywords" content="" />
+  <meta http-equiv="description" content="" />
+  <title>足球混合过关</title>
+  <meta name="applicable-device" content="mobile">
+  <style>
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/bootstrap.min.css" />
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/jquery.bxslider.css" />
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/jquery-ui-1.8.22.custom.css" />
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/reset.css">
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/top.css">
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/banner_notice.css">
+  <script src="/sporttery/static/common/jquery-3.4.1.min.js"></script>
+  <script>
+    function domainPreV1(tid) { try { var temDomain = document.domain.split("."); if (tid == 1) { if (temDomain && temDomain[0] && temDomain[0] != "m") { return 'gray' } else { return "www" } } else { if (temDomain && temDomain[0] && temDomain[0] != "m") { return temDomain[0] } else { return "m" } } } catch (e) { if (tid == 1) { return "www" } else { return "m" } } };
+    var jsCommonDataV1 = {
+      advUrl: "/htmlfrag",
+      webApi: "//webapi.sporttery.cn",
+      resDomain: ".",
+      res: "/sporttery/static/jcwm/default",
+      env: "prd",
+      domain1: "www.lottery.gov.cn"
+      , domain2: "www.sporttery.cn"
+      , domain3: "m.lottery.gov.cn"
+      , domain4: "m.sporttery.cn"
+      , domain5: domainPreV1(1) + ".lottery.gov.cn"
+      , domain6: domainPreV1(1) + ".sporttery.cn"
+      , domain7: domainPreV1(2) + ".lottery.gov.cn"
+      , domain8: domainPreV1(2) + ".sporttery.cn"
+      , liveVideo: '//' + domainPreV1(2) + '.lottery.gov.cn/tckj/index.html'
+
+    }
+  </script>
+  <script src="/sporttery/static/common/js/commonV1.js"></script>
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/lotCommon.css" />
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/lotCss1.css" />
+  <link rel="stylesheet" href="/sporttery/static/jcwm/css/calculator/mixed.css" />
+  <script src="/sporttery/static/jcwm/js/calculator/jquery.bxslider.js"></script>
+  <script src="/sporttery/static/jcwm/js/calculator/bootstrap.min.js"></script>
+  <script src="/sporttery/static/jcw/js/jc_calculator/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+  <script src="/sporttery/asserts/js/dataTransfer.js" type="text/javascript"></script>
+</head>
+
+<body style="overflow:auto;height:auto">
+  <!--头-->
+  <div class="g-header" id="sy_780">
+    <div class="m-header">
+      <img class="u-header-back" src="/sporttery/static/tcwm/images/icon_back.png" id='commonBack' />
+      <span id='commonTopTitle'>计算器</span>
+      <img class="u-header-more" src="/sporttery/static/tcwm/images/icon_more1.png" />
+    </div>
+  </div>
+  <!-- 足篮球切换-->
+  <div class="g-nav">
+    <ul class="m-nav m-nav-1 d-flex">
+      <li><a class="active">足球</a></li>
+      <li><a href="./lqhhgg.html">篮球</a></li>
+    </ul>
+  </div>
+  <div class="g-cont">
+    <div class="g-announce" id="jcsym_707">
+      <script src="/sporttery/static/jcwm/default/index/sy_tygg.js"></script>
+    </div>
+    <!--  计算器-->
+    <div class="Calculator_begin" id="jsq_902">
+      <div>
+        <span id="tabDiv">
+          <span id="noticeSpan"></span>
+          <span id="tabList"></span>
+        </span>
+      </div>
+      <div id="container">
+        <div id="headerTr">
+          <div id="calculator_menu"></div>
+          <div style="padding:0 3% 3% 3%; display: none;" id="bk_cup"></div>
+        </div>
+        <div class="leftPan" id="fbPan">
+          <div class="oddsList">
+            <div class="portlet"></div>
+          </div>
+        </div>
+        <div id="bkPan" class="leftPan">
+          <div class="oddsList"></div>
+        </div>
+        <div class="bottomDivHeight">&nbsp;</div>
+      </div>
+      <script src="/sporttery/asserts/js/jc_hhgg.js" type="text/javascript"></script>
+    </div>
+    <!--  计算器底部-->
+    <div id="jsq_913">
+      <div id='selDetailDiv'>
+        <ul class='bxslider' id='selDetailTbl'></ul>
+      </div>
+      <div id='sel_pan'>
+        <table width='100%;' align='center' cellpadding='0' cellspacing='0'>
+          <tr>
+            <td align='center' colspan='3'>
+              <div id='sel_footer_up'>
+                <div class='sel_selected'>
+                  <div id='selDetailBtn' class='matchBg'>
+                    <span style='display:inline-block;'>
+                      已选 <span id='selCount'>0</span>
+                  </div>
+                  <div class='showMatchs' style='display:none'></div>
+                  <div class='tip'>
+                    <label id='optionTip' style='width:100%;'></label>
+                  </div>
+                </div>
+                <div class='sel_guan'>
+                  <div class='matchBg' id='passSelection'>
+                    <span index='1' checked='checked'>过关选择</span>
+                  </div>
+                  <div style='display:none'>
+                    <span id='optionList' count='0'>
+                  </div>
+                  <div id='allSelect' class='showMode' style='display:none'>
+                    <div class='showModes'>
+                      <div style='' class='showModeEvery' id='item_0'>
+                        <span class='showModeText'>2关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_1'>
+                        <span class='showModeText'>3关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_2'>
+                        <span class='showModeText'>4关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_3'>
+                        <span class='showModeText'>5关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_4'>
+                        <span class='showModeText'>6关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_5'>
+                        <span class='showModeText'>7关</span>
+                      </div>
+                      <div style='' class='showModeEvery' id='item_6'>
+                        <span class='showModeText'>8关</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class='sel_clean'>
+                  <a href='javascript:void(0)' id='clearSel' onclick='return false;'>
+                    <img src='./asserts/images/clean.png' />
+                    <span>清 &nbsp;空</span>
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class='sel_footer_down'>
+                <div id='keyboard'>
+                  <table width='100%' border='0' cellspacing='0' cellpadding='0' class='multiple_ta'>
+                    <tbody>
+                      <tr>
+                        <td width='33.3%'></td>
+                        <td>
+                          <span id='multiple'>50</span>
+                          倍
+                        </td>
+                        <td width='33.3%'></td>
+                      </tr>
+                    </tbody>
+                    <table>
+                      <table class='table_keyboard' width='100%' border='0' cellspacing='0' cellpadding='0'>
+                        <tbody>
+                          <tr>
+                            <td width='33.3%'>
+                              <div onclick='lotFunc.clickKeyboard(1)'>1</div>
+                            </td>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(2)'>2</div>
+                            </td>
+                            <td width='33.3%' style='border-right:0'>
+                              <div onclick='lotFunc.clickKeyboard(3)'>3</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(4)'>4</div>
+                            </td>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(5)'>5</div>
+                            </td>
+                            <td style='border-right:0'>
+                              <div onclick='lotFunc.clickKeyboard(6)'>6</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(7)'>7</div>
+                            </td>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(8)'>8</div>
+                            </td>
+                            <td style='border-right:0'>
+                              <div onclick='lotFunc.clickKeyboard(9)'>9</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboardDel()'>删除</div>
+                            </td>
+                            <td>
+                              <div onclick='lotFunc.clickKeyboard(0)'>0</div>
+                            </td>
+                            <td style='border-right:0'>
+                              <div onclick='lotFunc.clickKeyboardOK()'>确认</div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+                <div class='sel_selected' onclick='lotFunc.openKeyboard()'>
+                  <div class='sel_nums'>
+                    <span id='times'>50</span>
+                    倍<input type='hidden' id='initTimes' value='true'>
+                  </div>
+                </div>
+                <div id='bonusTd' class='sel_money_div'>
+                  <div class='sel_money'>
+                    <b>投注金额：</b>
+                    <span id='consume'></span>
+                    元<br>
+                    <b>理论最高奖金：</b>
+                    <span id='bonus'></span>
+                    元
+                  </div>
+                </div>
+                <div class='plan' onclick="clickCkfa()" style="height:40px">查看方案</div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        </td>
+        </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+          <h4 class="modal-title" id="myModalLabel"> 过关方式：</h4>
+        </div>
+        <ul class="modal-body">
+        </ul>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+  </div>
+  <script src="/sporttery/static/jcwm/default/jc/jsq/jc_ckfa.js" type="text/javascript"></script>
+</body>
+
+</html>

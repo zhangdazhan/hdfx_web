@@ -1,0 +1,358 @@
+@charset "utf-8";
+/* CSS Document */
+img {
+	border: 0
+}
+table {
+	text-align: center;
+}
+#container {
+	margin: auto;
+	position: relative;
+	margin-bottom: 10px;
+}
+label{
+	font-weight:normal;
+	margin-bottom: 0;
+}
+/*数据加载等待*/
+#dialog_print.printPan {
+	display: none;
+}
+#container span {
+	text-align: center;
+	display: inline-block;
+}
+/*足球联赛名称*/
+#fbPan div.mNameCls {
+	line-height: 24px;
+    font-size: 14px;
+}
+/*让球胜平负列*/
+td.oddsPan {
+	padding: 0px;
+	margin: 0px;
+}
+label.rqCls {
+	display: inline-block;
+	width: 75px;
+	height: 34px;
+	line-height: 35px;
+}
+td.oddsPan span {
+	display: inline-block;
+    width: 32%;
+    height: 38px;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: 'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 2px 2px 0 0;
+    font-weight: normal;
+	border: solid 1px #d9d9d9;
+	border-radius: 5px;
+}
+/*比赛时间*/
+span.dateCls {
+	font-size: 12px;
+	font-weight:100;
+}
+div.portlet {
+	margin: 0px;
+}
+div.portlet-header {
+	margin: 0;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+div.oddsList {
+	margin-top: 0px;
+	
+}
+a.AgainstInfo:hover {
+	color: #e30000;
+}
+div.portlet-content table {
+	text-align: center;
+}
+div.portlet-content table span {
+    height: 38px;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: 'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    margin: 2px 2px 0 0;
+    font-weight: 300;
+	background-color: #FFFFFF;
+    border: solid 1px #d9d9d9;
+    color: #666666;
+    border-radius: 5px;
+	float:left;
+}
+.width32 { width: 32%;}
+.width24 { width: 24%;}
+.width19 { width: 19%;}
+div.portlet-content table span div{
+	color: #f84a4a;
+    font-size: 14px;
+    font-weight: 700;
+}
+div.portlet-content table span.oddsPanSel {
+	background-color: #f84a4a;
+    color: #ffffff;
+}
+div.portlet-content table span.oddsPanSel div{
+    color: #ffffff;
+}
+div.portlet-content td {
+	height: 28px;
+	line-height: 28px;
+}
+div.portlet-content table span.oddsHighLight {
+	background-color: #ee7a2d;
+}
+.ui-sortable-placeholder {
+	border: 1px dotted black;
+	visibility: visible !important;
+	height: 50px !important;
+}
+#bkPan td.oddsPan span {
+	width:45%;
+}
+td.oddsPan label {
+	display: inline-block;
+}
+td.oddsPan span.oddsPanSel {
+	background-color: #f84a4a;
+	color: #b90705;
+	font-weight: bold;
+	color: #FFF;
+}
+td.oddsPan span.oddsHighLight {
+	background-color: #C80000;
+}
+span.oddsPanDis {
+	color: #CCCCCC !important;
+}
+table.ttgOdds, table.crsOdds, table.hafuOdds, table.wnmOdds {
+	display: none;
+}
+#optionPan {
+	padding: 8px;
+	font-size: 14px;
+	font-family: Arial;
+}
+#optionPan span {
+	width: 65px;
+	display: inline-block;
+	text-align: left;
+}
+#calPan {
+	margin: 4px;
+	padding: 8px;
+	font-size: 14px;
+}
+#selList .selOver {
+	background-color: #F4E6A6;
+}
+td span.delSelTrBtn {
+	cursor: pointer;
+}
+span.selOption {
+	color: #FFFFFF;
+	padding: 4px;
+	background-color: #FF0000;
+	margin-right: 2px;
+	cursor: pointer;
+}
+#planPan {
+	padding: 8px;
+}
+#planPan div {
+	padding: 2px;
+	height: 16px;
+}
+#planPan div.planSel {
+	background-color: #9FD8EF;
+}
+#bkPan span.mNameCls {
+	width: 120px;
+	padding-top: 1px;
+}
+#amount {
+	border: 0;
+	color: #f6931f;
+	font-weight: bold;
+	width: 50px;
+}
+.ui-slider {
+	border: solid 1px #b1c7df;
+}
+.ui-state-default {
+	background-color: #008bd3;
+}/*
+em.middle-line {
+	display: inline-block;
+	width: 14px;
+	border-top: 1px solid #333;
+	position: relative;
+	top: 18px;
+}
+
+#sel_pan .subAddBtn {
+	background-color: #FFFFFF;
+	border: solid 1px #CCCCCC;
+	color: #EC8B00;
+	font-weight: bold;
+	width: 20px;
+}*/
+#consume {
+	color: #f84a4a;
+	font-weight: bold;
+}
+#bonus {
+	color: #f84a4a;
+	font-weight: bold;
+}
+#selDetailTbl td {
+	border-top: solid 1px #D3D3D3;
+	padding: 6px;
+	text-align: center;
+	word-break: keep-all;
+	white-space: nowrap;
+}
+a.linkBtn {
+	padding: 0px;
+	color: #4e91ea;
+	cursor: pointer;
+	display: inline-block;
+	width: 14px;
+	text-decoration: none;
+	font-size: 12px;
+}
+/*
+#detailClose {
+	display: inline-block;
+	float: right;
+	border: solid 1px #FF0000;
+	color: #ff0000;
+	cursor: pointer;
+	font-size: 13px;
+	width: 16px;
+}
+#viewDetailDiv td {
+	border-bottom: solid 1px #CCCCCC;
+	border-right: solid 1px #CCCCCC;
+}
+#selDetailClose{
+	position: absolute;
+	right:2px;
+	color: red;
+	cursor:pointer;
+}
+.close_btn{
+	display: inline-block;
+	padding: 2px 4px;
+	border: 1px solid #d9d9d9;
+	background-color: #f3f3f3;
+	box-shadow: 1px 1px 3px #666;
+	border-radius: 2px;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+a.AgainstInfo .sortLbl
+{
+	color:#888888;
+	margin:0px 8px 0px 8px;
+}*/
+.hideCss {
+    float: right;
+    padding-right: 4%;
+}
+.weeks {
+	font-size:16px;
+	line-height: 40px;
+	border-bottom: 1px solid #e6e6e6;
+	height:40px;
+	clear:both;
+}
+.red {
+	color:#f84a4a;
+	line-height:38px;
+}
+.matchTime {
+	background-color: #f6f6f6;
+    line-height: 20px;
+    font-size: 14px;
+    height: 80px;
+    padding-top: 20px;
+    margin-left: 5%;
+    margin-bottom:0;
+    color: #666666;
+    font-weight: normal;
+    border-radius: 5px;
+}
+.oddsPan span b { 
+	color:#f84a4a;
+}
+td.oddsPan span label{
+	font-size:12px;
+	font-weight:normal;
+}
+.toggle {
+	color:#3f92d2;
+	font-weight:normal;
+}
+.portlet-content span label {
+	font-weight:normal;
+	font-size:12px;
+}
+.oddsPan span.oddsPanSel b {
+	color:#FFF;
+}
+.game_title {
+	color: #f84a4a;
+	font-weight:bold;
+}
+.portlet-content {
+	padding-left:2%;
+}
+hr {
+	border:0; 
+	border-bottom:1px solid #CCC; 
+	margin:5px 0 0 0;
+}
+.selectMatch {
+	float:right;
+	padding-right:2%;
+	visibility:hidden;
+}
+.tip {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 111px;
+}
+#optionTip {
+    font-size: 12px;
+    color: #f84a4a;
+    overflow: visible;
+    white-space: nowrap;
+    font-weight:bold;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    word-wrap: break-word;
+    background: url(../../images/calculator/alpha50.png);
+    width: 100% !important;
+    text-align: center;
+    display: none;
+}
+.sel_money_div {
+    text-align:left;
+}
+.lname {
+	color:#3f92d2;
+}
