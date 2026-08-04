@@ -283,6 +283,8 @@ console.log('[ChuanCalc] 脚本已加载 v3');
   }
 
   function compute(opts){
+    if (opts.jcRebate != null && opts.jcRebate !== '') opts.jcRebate = Number(opts.jcRebate);
+    if (opts.hgRebate != null && opts.hgRebate !== '') opts.hgRebate = Number(opts.hgRebate);
     _callCount++;
     var ident=JSON.stringify({method1:opts.method1,method2:opts.method2,jr:opts.jcRebate,hr:opts.hgRebate,ji:opts.jcInput,jo1:opts.jcOdds1,jo2:opts.jcOdds2,ho1:opts.hgOdds1});
     var curHg2=JSON.stringify(opts.hgOdds2||[]);
